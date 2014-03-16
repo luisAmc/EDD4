@@ -1,0 +1,71 @@
+MAT102@Algebra@NULL@false
+ESP101@Espa�ol@NULL@false
+CCC106@Introduccion a la Computacion@NULL@false
+LCC101@Ofimatica I@NULL@false
+MAT103@Geometria y Trigonometria@MAT102@false
+HIS101@Historia de Honduras@NULL@false
+CCC104@Programacion I@MAT102@false
+CCC104@Programacion I@CCC106@false
+LCP104@Lab. Progra. I@MAT102@false
+LCP104@Lab. Progra. I@CCC106@false
+LCC102@Ofimatica II@LCC101@false
+MAT104@Calculo I Diferencial con Geometria Analitica@MAT103@false
+ADM102@Administracion I@NULL@false
+CCC105@Programacion II@CCC104@false
+CCC105@Programacion II@LCP104@false
+LCP105@Lab. Progra. II@CCC104@false
+LCP105@Lab. Progra. II@LCP104@false
+LCC103@Ofimatica II@LCC102@false
+MAT201@Calculo I Integral con Geometria Analitica@MAT104@false
+MAT105@Algebra Lineal@MAT103@false
+CCC208@Programacion III@CCC105@false
+CCC208@Programacion III@LCP105@false
+LCP208@Lab. Progra. III@CCC105@false
+LCP208@Lab. Progra. III@LCP105@false
+EIE1@Electiva de Idioma Extranjero I@NULL@false
+MAT202@Calculo II con Geometria Analitica@MAT201@false
+FIS201@Fisica I@MAT201@false
+CCC301@Estructura de Datos@CCC208@false
+CCC301@Estructura de Datos@LCP208@false
+CCC301@Estructura de Datos@LCC103@false
+EIE2@Electiva de Idioma Extranjero II@EIE1@false
+MAT203@Ecuaciones Diferenciales@MAT202@false
+MAT203@Ecuaciones Diferenciales@MAT105@false
+FIS202@Fisica II@FIS201@false
+CCC302@Organizacion de Archivos@CCC301@true
+EIE3@Electiva de Idioma Extranjero III@EIE2@false
+MAT303@Matematicas Discretas@MAT203@false
+FIS203@Fisica III@FIS202@false
+CCC205@Programacion IV@CCC302@false
+EIE4@Electiva de Idioma Extranjero IV@EIE3@false
+MAT304@Metodos Numericos@MAT303@false
+MAT301@Estadistica Matematica I@MAT201@false
+INF301@Sistemas de Informacion@NULL@false
+SOC101@Sociologia@NULL@false
+CCC407@Analisis de Algoritmos@MAT304@false
+CCC305@Dise�o Logico Digital@FIS203@false
+CCC305@Dise�o Logico Digital@CCC301@false
+CCC303@Teoria de Base de Datos I@INF301@true
+CCC303@Teoria de Base de Datos I@CCC205@true
+FIL101@Filosofia@NULL@false
+CCC403@Organizacion Computadoras@CCC305@false
+CCC304@Teoria de Base de Datos II@CCC303@true
+ART/DEP@Electiva de Arte o Deporte@NULL@false
+CON204@Analisis Contable I@NULL@false
+CCC405@Lenguajes de Programacion@MAT304@false
+CCC405@Lenguajes de Programacion@CCC205@false
+BIO@Electiva de CCNN@NULL@false
+CON308@Analisis Contable II@CON204@false
+CCC408@Teoria de la Computacion@CCC405@false
+EMP401@Generacion de Empresas I@CCC403@false
+INF405@Analisis y Dise�o de Sistemas I@CON308@false
+INF405@Analisis y Dise�o de Sistemas I@CCC303@false
+CCC401@Sistemas Operativos I@CCC403@false
+CCC404@Redes@CCC401@false
+INF406@Analisis y Dise�o de Sistemas II@INF405@false
+CCC402@Sistemas Operativos II@CCC401@false
+EFECCC1@Electiva de Formacion Especifica I@INF406@false
+CCC406@Ingenieria de Software@INF406@false
+CCC501@Compiladores I@CCC408@true
+EFECCC2@Electiva de Formacion Especifica II@INF406@false
+CCC502@Compiladores II@CCC501@true
