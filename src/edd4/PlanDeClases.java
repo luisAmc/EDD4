@@ -6,11 +6,17 @@
 
 package edd4;
 
+import edu.uci.ics.jung.graph.SparseMultigraph;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 /**
  *
  * @author Luis Martinez
  */
 public class PlanDeClases {
+    SparseMultigraph <NodoClase, String> grafo;
     class NodoClase {
         private String codigo;
         private String nombre;
@@ -22,9 +28,17 @@ public class PlanDeClases {
             return codigo + " " + nombre;
         }
     }//Final de la clase anonimo NodoClase
-    private void cargarClases() {   
-    }
-    private void cargarDependencias() {
-    
+    private void cargarClases() {
+        try {
+            File archivo = new File("./resources/Sistemas Computacionales.txt");
+            FileReader fr = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(fr);
+            String tmp;
+            while ((tmp = br.readLine()) != null) {
+                
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
