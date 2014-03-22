@@ -1,0 +1,59 @@
+﻿MAT102@Algebra@4@false
+ESP101@Espa�ol@4@false
+CCC106@Introduccion a la Computacion@3@false
+LCC101@Ofimatica I@1@false
+MAT103@Geometria y Trigonometria@4@false
+HIS101@Historia de Honduras@3@false
+CCC104@Programacion I@3@false
+LCP104@Lab. Progra. I@1@false
+LCC102@Ofimatica II@1@false
+MAT104@Calculo I Diferencial con Geometria Analitica@4@false
+ADM102@Administracion I@4@false
+CCC105@Programacion II@3@false
+LCP105@Lab. Progra. II@1@false
+LCC103@Ofimatica II@1@false
+MAT201@Calculo I Integral con Geometria Analitica@4@false
+MAT105@Algebra Lineal@4@false
+CCC208@Programacion III@3@false
+LCP208@Lab. Progra. III@1@false
+EIE1@Electiva de Idioma Extranjero I@3@false
+MAT202@Calculo II con Geometria Analitica@4@false
+FIS201@Fisica I@4@false
+CCC301@Estructura de Datos@4@false
+EIE2@Electiva de Idioma Extranjero II@3@false
+MAT203@Ecuaciones Diferenciales@4@false
+FIS202@Fisica II@4@false
+CCC302@Organizacion de Archivos@4@false
+EIE3@Electiva de Idioma Extranjero III@3@false
+MAT303@Matematicas Discretas@4@false
+FIS203@Fisica III@4@false
+CCC205@Programacion IV@4@false
+EIE4@Electiva de Idioma Extranjero IV@3@false
+MAT304@Metodos Numericos@4@false
+MAT301@Estadistica Matematica I@4@false
+INF301@Sistemas de Informacion@4@false
+SOC101@Sociologia@3@false
+CCC407@Analisis de Algoritmos@4@false
+CCC305@Dise�o Logico Digital@4@false
+CCC303@Teoria de Base de Datos I@4@false
+FIL101@Filosofia@3@false
+CCC403@Organizacion Computadoras@4@false
+CCC304@Teoria de Base de Datos II@4@false
+ART/DEP@Electiva de Arte o Deporte@3@false
+CON204@Analisis Contable I@4@false
+CCC405@Lenguajes de Programacion@4@false
+BIO@Electiva de CCNN@3@false
+CON308@Analisis Contable II@4@false
+CCC408@Teoria de la Computacion@4@false
+EMP401@Generacion de Empresas I@3@false
+INF405@Analisis y Dise�o de Sistemas I@4@false
+CCC401@Sistemas Operativos I@4@false
+CCC404@Redes@4@false
+INF406@Analisis y Dise�o de Sistemas II@4@false
+CCC402@Sistemas Operativos II@4@false
+EFECCC1@Electiva de Formacion Especifica I@4@false
+CCC406@Ingenieria de Software@4@false
+CCC501@Compiladores I@4@false
+EFECCC2@Electiva de Formacion Especifica II@4@false
+CCC502@Compiladores II@4@false
+CCC594@Proyecto de Graduacion Fase II@5@false
