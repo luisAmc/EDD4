@@ -29,7 +29,6 @@ public class main {
              System.out.println(V[i]);
         }//fin for
         
-       
-        
+     
     }
 }

@@ -60,4 +60,11 @@ public class Clase {//inicio clase
         this.Requisitos.add(Requisitos);
         
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+    
+    
 }//fin clase

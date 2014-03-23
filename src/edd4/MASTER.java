@@ -20,7 +20,7 @@ public class MASTER extends javax.swing.JFrame {
         initComponents();
         temp = new Planes();
         clase_temp = new Clase();
-
+        this.setLocationRelativeTo(null);
         Lista_Planes = new ArrayList();//inicializamos array
     }//fin cosntructor
 
@@ -39,7 +39,7 @@ public class MASTER extends javax.swing.JFrame {
         tf_codigoClase = new javax.swing.JTextField();
         tf_nombreClase = new javax.swing.JTextField();
         cb_requisitos = new javax.swing.JComboBox();
-        jToggleButton4 = new javax.swing.JToggleButton();
+        mas = new javax.swing.JToggleButton();
         jLabel12 = new javax.swing.JLabel();
         jToggleButton3 = new javax.swing.JToggleButton();
         rb_no = new javax.swing.JRadioButton();
@@ -108,14 +108,14 @@ public class MASTER extends javax.swing.JFrame {
         jPanel3.add(cb_requisitos);
         cb_requisitos.setBounds(170, 200, 140, 30);
 
-        jToggleButton4.setText("+");
-        jToggleButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+        mas.setText("+");
+        mas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jToggleButton4MouseClicked(evt);
+                masMouseClicked(evt);
             }
         });
-        jPanel3.add(jToggleButton4);
-        jToggleButton4.setBounds(340, 210, 50, 20);
+        jPanel3.add(mas);
+        mas.setBounds(340, 210, 50, 20);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setText("Clase Requisito");
@@ -132,10 +132,20 @@ public class MASTER extends javax.swing.JFrame {
         jToggleButton3.setBounds(350, 70, 110, 60);
 
         rb_no.setText("No");
+        rb_no.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rb_noMouseClicked(evt);
+            }
+        });
         jPanel3.add(rb_no);
         rb_no.setBounds(250, 230, 40, 23);
 
         rb_si.setText("Si");
+        rb_si.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rb_siActionPerformed(evt);
+            }
+        });
         jPanel3.add(rb_si);
         rb_si.setBounds(200, 230, 40, 23);
 
@@ -190,6 +200,11 @@ public class MASTER extends javax.swing.JFrame {
         jLabel4.setBounds(20, 20, 150, 30);
 
         jToggleButton2.setText("Ingresar");
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jToggleButton2);
         jToggleButton2.setBounds(60, 250, 80, 23);
         jPanel1.add(jSeparator4);
@@ -272,8 +287,10 @@ public class MASTER extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
 
-        if (getTemp().getClases().isEmpty()) {
+        if (this.getTemp().getClases().isEmpty()) {
             JOptionPane.showMessageDialog(this, "El plan no contiene clases");
+        } else if (this.tf_nombrePlan.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "El plan no tiene nombre");
         } else {
             Lista_Planes.add(getTemp());
             JOptionPane.showMessageDialog(this, "Plan agregado con exito");
@@ -344,7 +361,7 @@ public class MASTER extends javax.swing.JFrame {
         this.jd_ingresarClases.setVisible(false);
     }//GEN-LAST:event_jToggleButton7ActionPerformed
 
-    private void jToggleButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton4MouseClicked
+    private void masMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masMouseClicked
         //setear clases requisitos a mi clase temporal
 
         boolean ver = false;
@@ -361,7 +378,10 @@ public class MASTER extends javax.swing.JFrame {
 
         if (ver == false) {   //agregamos a clase tem las clase de requisito
 
+       
             this.clase_temp.setRequisitos((Clase) cb_requisitos.getSelectedItem());
+            JOptionPane.showMessageDialog(jd_ingresarClases, "Se ha agregado la clase "+this.cb_requisitos.getSelectedItem().toString()+""
+                    + " a "+this.clase_temp.getNombre());
         } else {
 
             JOptionPane.showMessageDialog(jd_ingresarClases, "Ya has ingresado esta clase como requisito");
@@ -369,7 +389,50 @@ public class MASTER extends javax.swing.JFrame {
         }//si ya la ingreso le indicamos al usuario
 
 
-    }//GEN-LAST:event_jToggleButton4MouseClicked
+    }//GEN-LAST:event_masMouseClicked
+
+    private void rb_siActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_siActionPerformed
+        // TODO add your handling code here:
+
+        if (this.rb_si.isSelected()) {
+
+            this.cb_requisitos.setEnabled(true);
+            this.mas.setEnabled(true);
+        }
+    }//GEN-LAST:event_rb_siActionPerformed
+
+    private void rb_noMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rb_noMouseClicked
+        // TODO add your handling code here:
+        if (this.rb_no.isSelected()) {
+
+            this.cb_requisitos.setEnabled(false);
+            this.mas.setEnabled(false);
+        }
+    }//GEN-LAST:event_rb_noMouseClicked
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        // TODO add your handling code here:
+
+        this.cb_requisitos.removeAllItems();
+
+        if (this.getTemp().getClases().isEmpty() == false) {
+
+
+            for (int o = 0; o < Lista_Planes.size(); o++) {
+
+                for (int i = 0; i < this.Lista_Planes.get(o).getClases().size(); i++) {//inicio for
+
+                    this.cb_requisitos.addItem(this.Lista_Planes.get(i).getClases().get(i));
+
+                }//fin for
+            }//fin for planes
+        }
+
+        this.jd_ingresarClases.setModal(true);
+        this.jd_ingresarClases.pack();
+        this.jd_ingresarClases.setLocationRelativeTo(this);
+        this.jd_ingresarClases.setVisible(true);
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -436,11 +499,11 @@ public class MASTER extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton5;
     private javax.swing.JToggleButton jToggleButton6;
     private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JDialog jd_ingresarClases;
+    private javax.swing.JToggleButton mas;
     private javax.swing.JRadioButton rb_no;
     private javax.swing.JRadioButton rb_si;
     private javax.swing.JTextField tf_codigoClase;

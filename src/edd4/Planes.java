@@ -37,7 +37,10 @@ public class Planes {//inicio calse Planes
         this.Clases.add(Clases);
     }
     
-    
+    @Override
+    public String toString() {
+        return nombre;
+    }
     
     
     
