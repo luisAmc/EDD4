@@ -17,12 +17,12 @@ public class Planes {//inicio calse Planes
     
     
       public Planes() {//inicio constructor vacio
-        
+        this.Clases=new ArrayList();
     }//fin cosntructor vacio
 
     public Planes(String nombre) {//inicio constructor vacio
         
-        this.Clases=new ArrayList();
+        
         this.nombre=nombre;
     }//fin cosntructor vacio
     

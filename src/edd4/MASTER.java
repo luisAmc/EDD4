@@ -22,6 +22,9 @@ public class MASTER extends javax.swing.JFrame {
         clase_temp = new Clase();
         this.setLocationRelativeTo(null);
         Lista_Planes = new ArrayList();//inicializamos array
+        Lista_Requisitos = new ArrayList();
+        
+        
     }//fin cosntructor
 
     @SuppressWarnings("unchecked")
@@ -131,6 +134,7 @@ public class MASTER extends javax.swing.JFrame {
         jPanel3.add(jToggleButton3);
         jToggleButton3.setBounds(350, 70, 110, 60);
 
+        buttonGroup1.add(rb_no);
         rb_no.setText("No");
         rb_no.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -140,6 +144,7 @@ public class MASTER extends javax.swing.JFrame {
         jPanel3.add(rb_no);
         rb_no.setBounds(250, 230, 40, 23);
 
+        buttonGroup1.add(rb_si);
         rb_si.setText("Si");
         rb_si.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -335,7 +340,15 @@ public class MASTER extends javax.swing.JFrame {
                 this.clase_temp.setNombre(this.tf_nombreClase.getText());
                 this.clase_temp.setCodigo(this.tf_codigoClase.getText());
                 this.clase_temp.setUnidades(Integer.parseInt(this.tf_unidadClase.getText()));
+                
+                if(this.Lista_Requisitos.isEmpty()==false){
+                    for (int i = 0; i <this.Lista_Requisitos.size(); i++) {
+                                    
+                    this.getClase_temp().setRequisitos(this.Lista_Requisitos.get(i));
+                    }//fin for
+                }//si no esta vacia requisitos
                 this.getTemp().setClases(this.getClase_temp());
+                this.cb_requisitos.addItem(this.getClase_temp());
                 JOptionPane.showMessageDialog(jd_ingresarClases, "Se ha agregado la clase \n" + this.tf_nombreClase.getText());
 
                 /*
@@ -345,6 +358,7 @@ public class MASTER extends javax.swing.JFrame {
                 this.tf_nombreClase.setText("");
                 this.tf_unidadClase.setText("");
                 this.clase_temp = new Clase();//limpiamos memoria 
+                this.Lista_Requisitos.clear();
             }
 
 
@@ -365,11 +379,11 @@ public class MASTER extends javax.swing.JFrame {
         //setear clases requisitos a mi clase temporal
 
         boolean ver = false;
-        if (this.getClase_temp().getRequisitos().size() != 0) {
+        if (!this.Lista_Requisitos.isEmpty()) {
 
-            for (int i = 0; i < this.getClase_temp().getRequisitos().size(); i++) {//inicio for
+            for (int i = 0; i <this.Lista_Requisitos.size(); i++) {//inicio for
 
-                if (((Clase) cb_requisitos.getSelectedItem()).getNombre().equals(this.getClase_temp().getNombre())) {
+                if (((Clase) cb_requisitos.getSelectedItem()).getNombre().equals(this.Lista_Requisitos.get(i).getNombre())) {
                     ver = true;
                 }
             }//fin for
@@ -379,9 +393,9 @@ public class MASTER extends javax.swing.JFrame {
         if (ver == false) {   //agregamos a clase tem las clase de requisito
 
        
-            this.clase_temp.setRequisitos((Clase) cb_requisitos.getSelectedItem());
-            JOptionPane.showMessageDialog(jd_ingresarClases, "Se ha agregado la clase "+this.cb_requisitos.getSelectedItem().toString()+""
-                    + " a "+this.clase_temp.getNombre());
+          this.Lista_Requisitos.add((Clase) this.cb_requisitos.getSelectedItem());
+            JOptionPane.showMessageDialog(jd_ingresarClases, "Se ha agregado la clase "+this.cb_requisitos.getSelectedItem().toString().toUpperCase()+""
+                    + " como requisito");
         } else {
 
             JOptionPane.showMessageDialog(jd_ingresarClases, "Ya has ingresado esta clase como requisito");
@@ -414,7 +428,8 @@ public class MASTER extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         this.cb_requisitos.removeAllItems();
-
+        this.cb_requisitos.setEnabled(false);
+        this.mas.setEnabled(false);
         if (this.getTemp().getClases().isEmpty() == false) {
 
 
@@ -514,6 +529,7 @@ public class MASTER extends javax.swing.JFrame {
     private ArrayList<Planes> Lista_Planes;//lista de Planes de estudio
     private Planes temp;
     private Clase clase_temp;
+    private ArrayList<Clase> Lista_Requisitos;
 
     public Planes getTemp() {
         return temp;

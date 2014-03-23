@@ -18,13 +18,14 @@ public class Clase {//inicio clase
     private ArrayList<Clase> Requisitos;
 
     public Clase() {//inicio constructor vacio
+         this.Requisitos =new ArrayList();
     }//fi cosntructor Vacio
 
     public Clase(String nombre, String codigo, int unidades) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.unidades = unidades;
-        this.Requisitos =new ArrayList();
+       
     }//fin constructor sobrecargado
 
     public String getNombre() {
