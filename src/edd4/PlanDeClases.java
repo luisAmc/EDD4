@@ -98,6 +98,7 @@ public class PlanDeClases {
                             for (NodoClase nodoTmp2 : grafo.getVertices()) {
                                 if (nodoTmp2.getCodigo().equalsIgnoreCase(codigoClase2)) {
                                     grafo.addEdge("", nodoTmp1, nodoTmp2);
+                                        nodoTmp2.aumentarIndegree();
                                     break;
                                 }
                             }
@@ -113,5 +114,8 @@ public class PlanDeClases {
     private void ordenamientoTopologico() {
         ArrayList<NodoClase> listaNodos = new ArrayList<NodoClase>();
         HashSet<NodoClase> conjuntoClases = new HashSet<NodoClase>();
+        for (NodoClase nodoTmp : grafo.getVertices()) {
+            
+        }
     }
 }
