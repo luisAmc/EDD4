@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -27,6 +28,7 @@ public class PlanDeClases {
         private String codigo;
         private String nombre;
         private int uv;
+        private int indegree;
         private boolean semestral;
         public NodoClase(String codigo, String nombre, int uv, boolean semestral) {
             this.codigo = codigo;
@@ -39,6 +41,12 @@ public class PlanDeClases {
         }
         public int getUV() {
             return uv;
+        }
+        public void aumentarIndegree() {
+            indegree++;
+        }
+        public int getIndegree() {
+            return indegree;
         }
         public String toString() {
             return codigo + " " + nombre + " u.v.: " + uv + ((semestral == true) ? "Es una clase semestral" : "No es una clase semestral");
@@ -85,19 +93,25 @@ public class PlanDeClases {
                 while (tokens.hasMoreTokens()){
                     codigoClase1 = tokens.nextToken();
                     codigoClase2 = tokens.nextToken();
-                    while (iteradorClases.hasNext()) {
-                        Object temporal = iteradorClases.next();
-                        if (((NodoClase)(temporal)).getCodigo().equalsIgnoreCase(codigoClase1)) {
-                            clase1 = (NodoClase) temporal;
-                        } else if (((NodoClase)(temporal)).getCodigo().equalsIgnoreCase(codigoClase2)) {
-                            clase2 = (NodoClase) temporal;
+                    for (NodoClase nodoTmp1 : grafo.getVertices()) {
+                        if (nodoTmp1.getCodigo().equalsIgnoreCase(codigoClase1)) {
+                            for (NodoClase nodoTmp2 : grafo.getVertices()) {
+                                if (nodoTmp2.getCodigo().equalsIgnoreCase(codigoClase2)) {
+                                    grafo.addEdge("", nodoTmp1, nodoTmp2);
+                                    break;
+                                }
+                            }
+                            break;
                         }
                     }
-                    grafo.addEdge("", clase1, clase2);
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }//Final del metodo cargarDependencias(Este une los vertices del grafo)
+    private void ordenamientoTopologico() {
+        ArrayList<NodoClase> listaNodos = new ArrayList<NodoClase>();
+        HashSet<NodoClase> conjuntoClases = new HashSet<NodoClase>();
+    }
 }
