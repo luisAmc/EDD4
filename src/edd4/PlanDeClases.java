@@ -26,6 +26,16 @@ import java.util.StringTokenizer;
  */
 public class PlanDeClases {
     SparseMultigraph <NodoClase, DependenciaClase> grafo;
+    
+    public PlanDeClases(){
+    
+        grafo = new SparseMultigraph <NodoClase, DependenciaClase>();
+        cargarClases();
+        cargarDependencias();
+    
+    }//fin plan de clases
+    
+    
     class NodoClase {
         private String codigo;
         private String nombre;
@@ -78,7 +88,7 @@ public class PlanDeClases {
     //Este metodo carga el codigo de la clase, su nombre, sus unidades valorativas y si es semestral o no
     private void cargarClases() {
         try {
-            File archivo = new File("./resources/Sistemas Computacionales (Solo clases).txt");
+            File archivo = new File("./src/resources/Sistemas Computacionales (Solo clases).txt");
             FileReader fr = new FileReader(archivo);
             BufferedReader br = new BufferedReader(fr);
             String tmp, codigo, nombre, uv, semestral;
@@ -103,7 +113,7 @@ public class PlanDeClases {
     //Este metodo -cargarDependencias()- une los nodos del grafo
     private void cargarDependencias() {
         try {
-            File archivo = new File("./resources/Sistemas Computacionales (Dependencias).txt");
+            File archivo = new File("./src/resources/Sistemas Computacionales (Dependencias).txt");
             FileReader fr = new FileReader(archivo);
             BufferedReader br = new BufferedReader(fr);
             String tmp, codigoClase1, codigoClase2;
@@ -115,6 +125,8 @@ public class PlanDeClases {
                 tokens = new StringTokenizer(tmp, "@");
                 while (tokens.hasMoreTokens()){
                     codigoClase1 = tokens.nextToken();
+                    
+                    if(tokens.hasMoreTokens()){
                     codigoClase2 = tokens.nextToken();
                     for (NodoClase nodoTmp1 : grafo.getVertices()) {
                         if (nodoTmp1.getCodigo().equalsIgnoreCase(codigoClase1)) {
@@ -130,6 +142,7 @@ public class PlanDeClases {
                         }
                     }
                 }
+                }//fin if validacion
             }
         } catch (Exception ex) {
             ex.printStackTrace();
