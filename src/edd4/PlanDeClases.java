@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,6 +57,7 @@ public class PlanDeClases {
         public ArrayList<DependenciaClase> getOutdegree() {
             return outdegree;
         }
+        @Override
         public String toString() {
             return codigo + " " + nombre + " u.v.: " + uv + ((semestral == true) ? "Es una clase semestral" : "No es una clase semestral");
         }
@@ -150,7 +152,24 @@ public class PlanDeClases {
             for (Iterator<DependenciaClase> iterador = nodoTmp.getOutdegree().iterator(); iterador.hasNext();) {
                 DependenciaClase dependencia = iterador.next();
                 NodoClase clase = dependencia.llegada;
+                iterador.remove();
+                clase.indegree.remove(dependencia);
+                
+                if (clase.indegree.isEmpty()) {
+                    conjuntoClases.add(clase);
+                }
             }
         }
+        boolean ciclo = false;
+        for (NodoClase nodoTmp : grafo.getVertices()) {
+            if (!nodoTmp.indegree.isEmpty()) {
+                ciclo = true;
+                break;
+            }
+        }
+        if (ciclo)
+            System.out.println("Existe un ciclo man, algo esta mal con el grafo! HAY QUE ARREGLALO!");
+        else 
+            System.out.println("Ordenamiento topologico: " + Arrays.toString(listaNodos.toArray()));
     }
 }
