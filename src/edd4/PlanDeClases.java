@@ -138,19 +138,20 @@ public class PlanDeClases {
             StringTokenizer tokens = null;
             DependenciaClase dependenciaTmp = null;
             Iterator iteradorClases = grafo.getVertices().iterator();
+            
             while ((tmp = br.readLine()) != null) {
                 tokens = new StringTokenizer(tmp, "@");
+                
                 while (tokens.hasMoreTokens()) {
                     codigoClase1 = tokens.nextToken();
                     if (tokens.hasMoreTokens()) {
                         codigoClase2 = tokens.nextToken();
                         for (NodoClase nodoTmp1 : grafo.getVertices()) {
-                            if (nodoTmp1.getCodigo().equalsIgnoreCase(codigoClase1)) {
+                            if (nodoTmp1.codigo.equalsIgnoreCase(codigoClase1)) {
                                 for (NodoClase nodoTmp2 : grafo.getVertices()) {
-                                    if (nodoTmp2.getCodigo().equalsIgnoreCase(codigoClase2)) {
-                                        System.out.println("Clase: " + nodoTmp2.nombre);
-                                        System.out.println("Suficiencia de: " + nodoTmp1.nombre + "\n");
+                                    if (nodoTmp2.codigo.equalsIgnoreCase(codigoClase2)) {
                                         nodoTmp2.addEdge(nodoTmp1);
+                                        
                                         break;
                                     }
                                 }
@@ -162,17 +163,26 @@ public class PlanDeClases {
                     //}
                 }//fin if validacion
             }
+            NodoClase n1 = null;
+            NodoClase n2 = null;
+            for (NodoClase nodoTmp : grafo.getVertices()) {
+                if (nodoTmp.codigo.equalsIgnoreCase("MAT103")) {
+                    n2 = nodoTmp;
+                } else if (nodoTmp.nombre.equalsIgnoreCase("algebra")) {
+                    n1 = nodoTmp;
+                }
+                if ((n1 != null) && (n2 != null)) {
+                    n1.addEdge(n2);
+                    break;
+                } else {
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }//Final del metodo cargarDependencias(Este une los vertices del grafo)
 
     public void ordenamientoTopologico() {
-        for (NodoClase tmp : grafo.getVertices())
-            if (tmp.codigo.equalsIgnoreCase("MAT103")) 
-                System.out.println("La cantidad de in es " + tmp.getInEdges().size() + " y el out es " + tmp.getOutdegree().size());
-            
-        
         ArrayList<NodoClase> listaNodos = new ArrayList<NodoClase>();
         LinkedHashSet<NodoClase> conjuntoClases = new LinkedHashSet<NodoClase>();
         for (NodoClase nodoTmp : grafo.getVertices()) {
@@ -180,6 +190,7 @@ public class PlanDeClases {
                 conjuntoClases.add(nodoTmp);
             }
         }
+        
         while (!conjuntoClases.isEmpty()) {
             NodoClase nodoTmp = conjuntoClases.iterator().next();
             conjuntoClases.remove(nodoTmp);
