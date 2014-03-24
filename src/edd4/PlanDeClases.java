@@ -36,7 +36,7 @@ public class PlanDeClases {
         cargarDependencias();
     }//fin plan de clases
 
-    class NodoClase {
+    static class NodoClase implements Cloneable{
 
         private String codigo;
         private String nombre;
@@ -53,7 +53,29 @@ public class PlanDeClases {
             inEdges = new LinkedHashSet<DependenciaClase>();
             outEdges = new LinkedHashSet<DependenciaClase>();
         }
-
+        
+        public NodoClase(final NodoClase nodo) {
+            NodoClase nodoNuevo = new NodoClase(nodo.codigo, nodo.nombre, nodo.uv, nodo.semestral);
+            this.inEdges = new LinkedHashSet<DependenciaClase>();
+            for (DependenciaClase arista : nodo.getInEdges()) {
+                this.inEdges.add(arista);
+            }
+            this.outEdges = new LinkedHashSet<DependenciaClase>();
+            for (DependenciaClase arista : nodo.getOutEdges()) {
+                this.outEdges.add(arista);
+            }
+        }
+        
+        @Override
+        public Object clone() {
+            try {
+                return super.clone();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+        
         public void addEdge(NodoClase nodo) {
             DependenciaClase arista = new DependenciaClase(this, nodo);
             this.outEdges.add(arista);
@@ -83,7 +105,7 @@ public class PlanDeClases {
         }
     }//Final de la clase anonima NodoClase
 
-    class DependenciaClase {
+    static class DependenciaClase {
 
         private NodoClase partida;
         private NodoClase llegada;
@@ -213,8 +235,7 @@ public class PlanDeClases {
             NodoClase nodoTmp = conjuntoClases.iterator().next();
             conjuntoClases.remove(nodoTmp);
 //            System.out.println(nodoTmp);
-            listaNodos.add(nodoTmp);
-            System.out.println("\nSolo chequeando el size real de nuevo -> " + listaNodos.get(0).getOutEdges().size());
+            listaNodos.add((NodoClase)(nodoTmp.clone()));
 
             for (Iterator<DependenciaClase> iterador = nodoTmp.getOutEdges().iterator(); iterador.hasNext();) {
                 DependenciaClase dependencia = iterador.next();
@@ -234,7 +255,7 @@ public class PlanDeClases {
                 break;
             }
         }
-        if (ciclo) {
+        if (false) {
             System.out.println("Existe un ciclo man, algo esta mal con el grafo! HAY QUE ARREGLALO! ");
         } else {
             try {
