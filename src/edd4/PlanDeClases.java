@@ -72,7 +72,7 @@ public class PlanDeClases {
             return inEdges;
         }
 
-        public LinkedHashSet<DependenciaClase> getOutdegree() {
+        public LinkedHashSet<DependenciaClase> getOutEdges() {
             return outEdges;
         }
 
@@ -194,11 +194,9 @@ public class PlanDeClases {
     }//Final del metodo cargarDependencias(Este une los vertices del grafo)
 
     public void ordenamientoTopologico() {
-//        for (NodoClase tmp : grafo.getVertices())
-//            if (tmp.codigo.equalsIgnoreCase("﻿MAT102")){
-//                System.out.println(tmp.nombre);
-//                System.out.println("La cantidad de in es " + tmp.getInEdges().size() + " y el out es " + tmp.getOutdegree().size() + "\n");
-//            }
+        for (NodoClase tmp : grafo.getVertices()) {
+            System.out.println(tmp.getOutEdges().size() + " <- este es el size real");
+        }
         
         ArrayList<NodoClase> listaNodos = new ArrayList<NodoClase>();
         LinkedHashSet<NodoClase> conjuntoClases = new LinkedHashSet<NodoClase>();
@@ -216,8 +214,9 @@ public class PlanDeClases {
             conjuntoClases.remove(nodoTmp);
 //            System.out.println(nodoTmp);
             listaNodos.add(nodoTmp);
+            System.out.println("\nSolo chequeando el size real de nuevo -> " + listaNodos.get(0).getOutEdges().size());
 
-            for (Iterator<DependenciaClase> iterador = nodoTmp.getOutdegree().iterator(); iterador.hasNext();) {
+            for (Iterator<DependenciaClase> iterador = nodoTmp.getOutEdges().iterator(); iterador.hasNext();) {
                 DependenciaClase dependencia = iterador.next();
                 NodoClase clase = dependencia.llegada;
                 iterador.remove();
@@ -238,15 +237,55 @@ public class PlanDeClases {
         if (ciclo) {
             System.out.println("Existe un ciclo man, algo esta mal con el grafo! HAY QUE ARREGLALO! ");
         } else {
-            int j = 0;
-            for (int i = 0; i < listaNodos.size(); i++) {
-                System.out.print(listaNodos.get(i) + "\t |||| \t");
-                j++;
-                if (j == 4) {
-                    System.out.println("");
-                    j = 0;
+            try {
+                String salida = "";
+                int clasesPorTrimestre = 0;
+                for (int i = 0; i < listaNodos.size(); i++) {
+                    if (validacionTopologica(listaNodos, i) == 0) {
+                        salida += " " + listaNodos.get(i);
+                        System.out.println(0);
+                        clasesPorTrimestre++;
+                    } else if (validacionTopologica(listaNodos, i) == 1) {
+                        salida += " " + listaNodos.get(i);
+                        System.out.println(1);
+                        clasesPorTrimestre += 3;
+                    } else if (validacionTopologica(listaNodos, i) == 2) {
+                        salida += " " + listaNodos.get(i);
+                        System.out.println(2);
+                        clasesPorTrimestre += 2;
+                    } else if (validacionTopologica(listaNodos, i) == 3) {
+                        salida += " " + listaNodos.get(i);
+                        System.out.println(3);
+                        clasesPorTrimestre += 1;
+                    }
+                    if (clasesPorTrimestre > 3) {
+                        salida += "\n";
+                        clasesPorTrimestre = 0;
+                    }
                 }
+                System.out.println(salida);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
+        }
+    }
+    private int validacionTopologica(ArrayList<NodoClase> lista, int pos) {
+        int retVal = 0;
+        System.out.println(lista.get(pos).getOutEdges().size() + " <- este es el size");
+        try {
+            if (lista.get(pos).getOutEdges().isEmpty())
+                return retVal;
+            else if (!lista.get(pos).getOutEdges().isEmpty())
+                if(lista.get(pos).getOutEdges().contains(lista.get(pos + 1))) {
+                    retVal++;
+                } else if (lista.get(pos).getOutEdges().contains(lista.get(pos + 2))) {
+                    retVal++;
+                } else if (lista.get(pos).getOutEdges().contains(lista.get(pos + 3))) {
+                    retVal++;
+                }
+        } catch (Exception ex) {
+        } finally {
+            return retVal;
         }
     }
 }
