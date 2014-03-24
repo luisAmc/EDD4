@@ -34,7 +34,6 @@ public class PlanDeClases {
         grafo = new SparseMultigraph <NodoClase, DependenciaClase>();
         cargarClases();
         cargarDependencias();
-    
     }//fin plan de clases
     
     
@@ -42,16 +41,21 @@ public class PlanDeClases {
         private String codigo;
         private String nombre;
         private int uv;
-        private HashSet<DependenciaClase> inEdges;
-        private HashSet<DependenciaClase> outEdges;
+        private LinkedHashSet<DependenciaClase> inEdges;
+        private LinkedHashSet<DependenciaClase> outEdges;
         private boolean semestral;
         public NodoClase(String codigo, String nombre, int uv, boolean semestral) {
             this.codigo = codigo;
             this.nombre = nombre;
             this.uv = uv;
             this.semestral = semestral;
-            inEdges = new HashSet<DependenciaClase>();
-            outEdges = new HashSet<DependenciaClase>();
+            inEdges = new LinkedHashSet<DependenciaClase>();
+            outEdges = new LinkedHashSet<DependenciaClase>();
+        }
+        public void addEdge(NodoClase nodo) {
+            DependenciaClase arista = new DependenciaClase(this, nodo);
+            outEdges.add(arista);
+            nodo.inEdges.add(arista);
         }
         public String getCodigo() {
             return codigo;
@@ -69,10 +73,10 @@ public class PlanDeClases {
         public void aumentarOutdegree(DependenciaClase dependencia) {
             outEdges.add(dependencia);
         }
-        public HashSet<DependenciaClase> getIndegree() {
+        public LinkedHashSet<DependenciaClase> getIndegree() {
             return inEdges;
         }
-        public HashSet<DependenciaClase> getOutdegree() {
+        public LinkedHashSet<DependenciaClase> getOutdegree() {
             return outEdges;
         }
         @Override
@@ -132,29 +136,38 @@ public class PlanDeClases {
                 tokens = new StringTokenizer(tmp, "@");
                 while (tokens.hasMoreTokens()){
                     codigoClase1 = tokens.nextToken();
-                    
+                    System.out.println("\nSoy yo + " + codigoClase1 + " \n\n");
                     if(tokens.hasMoreTokens()){
                     codigoClase2 = tokens.nextToken();
+                        System.out.println("soy yo " + codigoClase2);
                     for (NodoClase nodoTmp1 : grafo.getVertices()) {
                         if (nodoTmp1.getCodigo().equalsIgnoreCase(codigoClase1)) {
-                            if (codigoClase2.equalsIgnoreCase("null")) {
-                                System.out.println("->-> " + nodoTmp1.nombre + " puede ser una clase inicial");
-                            } else {
+//                            if (codigoClase2.equalsIgnoreCase("null")) {
+//                                System.out.println("->-> " + nodoTmp1.nombre + " puede ser una clase inicial");
+//                            } else 
+//                            {
                                 for (NodoClase nodoTmp2 : grafo.getVertices()) {
                                     if (nodoTmp2.getCodigo().equalsIgnoreCase(codigoClase2)) {
-                                        dependenciaTmp = new DependenciaClase(nodoTmp1, nodoTmp2);
-                                        grafo.addEdge(dependenciaTmp, nodoTmp1, nodoTmp2, EdgeType.DIRECTED);
-                                        nodoTmp2.aumentarIndegree(dependenciaTmp);
-                                        nodoTmp1.aumentarOutdegree(dependenciaTmp);
+                                        System.out.println("entre");
+                                        
+                                        nodoTmp1.addEdge(nodoTmp2);
+                                        
+//                                        dependenciaTmp = new DependenciaClase(nodoTmp2, nodoTmp1);
+//                                        grafo.addEdge(dependenciaTmp, nodoTmp2, nodoTmp1, EdgeType.DIRECTED);
+//                                        nodoTmp1.aumentarIndegree(dependenciaTmp);
+//                                        nodoTmp2.aumentarOutdegree(dependenciaTmp);
                                         System.out.println("-> " + nodoTmp1.nombre + " depende de " + nodoTmp2.nombre);
+//                                        if (nodoTmp1.codigo.equalsIgnoreCase("MAT103")) {
+                                            System.out.println("\n\nAqui Esta!\n\n");
+                                        }
                                         break;
                                     }
                                 }
                                 break;
                             }
                         }
-                    }
-                }
+//                    }
+                //}
                 }//fin if validacion
             }
         } catch (Exception ex) {
