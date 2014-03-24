@@ -215,7 +215,7 @@ public class PlanDeClases {
             }
         }
         if (ciclo) {
-            System.out.println("Existe un ciclo man, algo esta mal con el grafo! HAY QUE ARREGLALO!");
+            System.out.println("Existe un ciclo man, algo esta mal con el grafo! HAY QUE ARREGLALO! ");
         } else {
             int j = 0;
             for (int i = 0; i < listaNodos.size(); i++) {
