@@ -100,7 +100,7 @@ public class PlanDeClases {
 
         @Override
         public String toString() {
-            return codigo + " " + nombre + " u.v.: " + uv;
+            return codigo + " " + nombre;
             //+ ((semestral == true) ? " Es una clase semestral" : " No es una clase semestral")
         }
     }//Final de la clase anonima NodoClase
@@ -217,9 +217,13 @@ public class PlanDeClases {
 
     public void ordenamientoTopologico() {
         for (NodoClase tmp : grafo.getVertices()) {
-            System.out.println(tmp.getOutEdges().size() + " <- este es el size real");
+            if (tmp.nombre.equalsIgnoreCase("Teoria de Base de Datos I")) {
+                System.out.println("teo depende de " + tmp.getInEdges().size());
+                System.out.println("teo sufiencia de " + tmp.getOutEdges().size());
+            }
         }
         
+        ArrayList<NodoClase> listaDependencias = new ArrayList<NodoClase>();
         ArrayList<NodoClase> listaNodos = new ArrayList<NodoClase>();
         LinkedHashSet<NodoClase> conjuntoClases = new LinkedHashSet<NodoClase>();
 //        System.out.println("\nAl conjunto");
@@ -230,13 +234,16 @@ public class PlanDeClases {
             }
         }
         
+        int contador = 0;
 //        System.out.println("\nViendo la lista");
         while (!conjuntoClases.isEmpty()) {
             NodoClase nodoTmp = conjuntoClases.iterator().next();
             conjuntoClases.remove(nodoTmp);
 //            System.out.println(nodoTmp);
             listaNodos.add((NodoClase)(nodoTmp.clone()));
-
+            listaDependencias.add((NodoClase)nodoTmp.clone());
+            System.out.println("el size real es -> " + listaDependencias.get(contador).getOutEdges().size());
+            contador++;
             for (Iterator<DependenciaClase> iterador = nodoTmp.getOutEdges().iterator(); iterador.hasNext();) {
                 DependenciaClase dependencia = iterador.next();
                 NodoClase clase = dependencia.llegada;
@@ -262,20 +269,20 @@ public class PlanDeClases {
                 String salida = "";
                 int clasesPorTrimestre = 0;
                 for (int i = 0; i < listaNodos.size(); i++) {
-                    if (validacionTopologica(listaNodos, i) == 0) {
-                        salida += " " + listaNodos.get(i);
+                    if (validacionTopologica(listaNodos, listaDependencias, i) == 0) {
+                        salida += "\t || \t" + listaNodos.get(i);
                         System.out.println(0);
                         clasesPorTrimestre++;
-                    } else if (validacionTopologica(listaNodos, i) == 1) {
-                        salida += " " + listaNodos.get(i);
+                    } else if (validacionTopologica(listaNodos, listaDependencias, i) == 1) {
+                        salida += "\t || \t" + listaNodos.get(i);
                         System.out.println(1);
                         clasesPorTrimestre += 3;
-                    } else if (validacionTopologica(listaNodos, i) == 2) {
-                        salida += " " + listaNodos.get(i);
+                    } else if (validacionTopologica(listaNodos, listaDependencias, i) == 2) {
+                        salida += "\t || \t" + listaNodos.get(i);
                         System.out.println(2);
                         clasesPorTrimestre += 2;
-                    } else if (validacionTopologica(listaNodos, i) == 3) {
-                        salida += " " + listaNodos.get(i);
+                    } else if (validacionTopologica(listaNodos, listaDependencias, i) == 3) {
+                        salida += "\t || \t" + listaNodos.get(i);
                         System.out.println(3);
                         clasesPorTrimestre += 1;
                     }
@@ -290,20 +297,26 @@ public class PlanDeClases {
             }
         }
     }
-    private int validacionTopologica(ArrayList<NodoClase> lista, int pos) {
+    private int validacionTopologica(ArrayList<NodoClase> lista, ArrayList<NodoClase> dependencias, int pos) {
         int retVal = 0;
-        System.out.println(lista.get(pos).getOutEdges().size() + " <- este es el size");
+        System.out.println(dependencias.get(pos).getOutEdges().size() + " <- este es el size");
         try {
             if (lista.get(pos).getOutEdges().isEmpty())
                 return retVal;
-            else if (!lista.get(pos).getOutEdges().isEmpty())
-                if(lista.get(pos).getOutEdges().contains(lista.get(pos + 1))) {
-                    retVal++;
-                } else if (lista.get(pos).getOutEdges().contains(lista.get(pos + 2))) {
-                    retVal++;
-                } else if (lista.get(pos).getOutEdges().contains(lista.get(pos + 3))) {
-                    retVal++;
-                }
+            else if (!dependencias.get(pos).getOutEdges().isEmpty()) {
+                Iterator<DependenciaClase> iterador = lista.get(pos).getOutEdges().iterator();
+                while (iterador.hasNext()) {
+                    Iterator<DependenciaClase> iterador2 = dependencias.get(pos).getOutEdges().iterator();
+                    while (iterador2.hasNext()) {
+                        if (iterador2.next().llegada.equals(iterador2.next().partida)); 
+                            retVal++;
+                        if (iterador2.next().llegada.equals(iterador2.next().partida))
+                            retVal++;
+                        if (iterador2.next().llegada.equals(iterador2.next().partida)) 
+                            retVal++;
+                    }
+                }    
+            }
         } catch (Exception ex) {
         } finally {
             return retVal;
