@@ -28,7 +28,7 @@ public class main {
 //         for (int i = 0; i <V.length; i++) {//inicio for
 //             System.out.println(V[i]);
 //        }//fin for
-         System.out.println("\nOrdenamiento Topologico");
+         System.out.println("\nOrdenamiento Topologico:");
         p.ordenamientoTopologico();
     }
 }
