@@ -40,14 +40,16 @@ public class PlanDeClases {
         private String codigo;
         private String nombre;
         private int uv;
-        private ArrayList<DependenciaClase> indegree;
-        private ArrayList<DependenciaClase> outdegree;
+        private HashSet<DependenciaClase> inEdges;
+        private HashSet<DependenciaClase> outEdges;
         private boolean semestral;
         public NodoClase(String codigo, String nombre, int uv, boolean semestral) {
             this.codigo = codigo;
             this.nombre = nombre;
             this.uv = uv;
             this.semestral = semestral;
+            inEdges = new HashSet<DependenciaClase>();
+            outEdges = new HashSet<DependenciaClase>();
         }
         public String getCodigo() {
             return codigo;
@@ -56,20 +58,24 @@ public class PlanDeClases {
             return uv;
         }
         public void aumentarIndegree(DependenciaClase suficiencia) {
-            indegree.add(suficiencia);
+            try {
+                inEdges.add(suficiencia);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         public void aumentarOutdegree(DependenciaClase dependencia) {
-            outdegree.add(dependencia);
+            outEdges.add(dependencia);
         }
-        public ArrayList<DependenciaClase> getIndegree() {
-            return indegree;
+        public HashSet<DependenciaClase> getIndegree() {
+            return inEdges;
         }
-        public ArrayList<DependenciaClase> getOutdegree() {
-            return outdegree;
+        public HashSet<DependenciaClase> getOutdegree() {
+            return outEdges;
         }
         @Override
         public String toString() {
-            return codigo + " " + nombre + " u.v.: " + uv + ((semestral == true) ? "Es una clase semestral" : "No es una clase semestral");
+            return codigo + " " + nombre + " u.v.: " + uv + ((semestral == true) ? " Es una clase semestral" : " No es una clase semestral");
         }
     }//Final de la clase anonima NodoClase
     class DependenciaClase {
@@ -101,8 +107,7 @@ public class PlanDeClases {
                     nombre = tokens.nextToken();
                     uv = tokens.nextToken();
                     semestral = tokens.nextToken();
-                   nodo = new NodoClase(codigo, nombre, Integer.parseInt(uv), (semestral.equalsIgnoreCase("true") ? true : false));
-                   grafo.addVertex(nodo);
+                   grafo.addVertex(new NodoClase(codigo, nombre, Integer.parseInt(uv), (semestral.equalsIgnoreCase("true") ? true : false)));
                 }
             }
         } catch (Exception ex) {
@@ -118,8 +123,7 @@ public class PlanDeClases {
             BufferedReader br = new BufferedReader(fr);
             String tmp, codigoClase1, codigoClase2;
             StringTokenizer tokens = null;
-            NodoClase clase1 = null;
-            NodoClase clase2 = null;
+            DependenciaClase dependenciaTmp = null;
             Iterator iteradorClases = grafo.getVertices().iterator();
             while ((tmp = br.readLine()) != null){
                 tokens = new StringTokenizer(tmp, "@");
@@ -132,9 +136,10 @@ public class PlanDeClases {
                         if (nodoTmp1.getCodigo().equalsIgnoreCase(codigoClase1)) {
                             for (NodoClase nodoTmp2 : grafo.getVertices()) {
                                 if (nodoTmp2.getCodigo().equalsIgnoreCase(codigoClase2)) {
-                                    grafo.addEdge(new DependenciaClase(nodoTmp1, nodoTmp2), nodoTmp1, nodoTmp2, EdgeType.DIRECTED);
-                                        nodoTmp2.aumentarIndegree(new DependenciaClase(nodoTmp1, nodoTmp2));
-                                        nodoTmp1.aumentarOutdegree(new DependenciaClase(nodoTmp1, nodoTmp2));
+                                    dependenciaTmp = new DependenciaClase(nodoTmp1, nodoTmp2);
+                                    grafo.addEdge(dependenciaTmp, nodoTmp1, nodoTmp2, EdgeType.DIRECTED);
+                                        nodoTmp2.aumentarIndegree(dependenciaTmp);
+                                        nodoTmp1.aumentarOutdegree(dependenciaTmp);
                                     break;
                                 }
                             }
@@ -166,16 +171,16 @@ public class PlanDeClases {
                 DependenciaClase dependencia = iterador.next();
                 NodoClase clase = dependencia.llegada;
                 iterador.remove();
-                clase.indegree.remove(dependencia);
+                clase.inEdges.remove(dependencia);
                 
-                if (clase.indegree.isEmpty()) {
+                if (clase.inEdges.isEmpty()) {
                     conjuntoClases.add(clase);
                 }
             }
         }
         boolean ciclo = false;
         for (NodoClase nodoTmp : grafo.getVertices()) {
-            if (!nodoTmp.indegree.isEmpty()) {
+            if (!nodoTmp.inEdges.isEmpty()) {
                 ciclo = true;
                 break;
             }
