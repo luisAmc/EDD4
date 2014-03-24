@@ -56,4 +56,3 @@ CCC406@Ingenieria de Software@4@false
 CCC501@Compiladores I@4@false
 EFECCC2@Electiva de Formacion Especifica II@4@false
 CCC502@Compiladores II@4@false
-CCC594@Proyecto de Graduacion Fase II@5@false
