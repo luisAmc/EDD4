@@ -11,7 +11,7 @@ MAT104@Calculo I Diferencial con Geometria Analitica@4@false
 ADM102@Administracion I@4@false
 CCC105@Programacion II@3@false
 LCP105@Lab. Progra. II@1@false
-LCC103@Ofimatica II@1@false
+LCC103@Ofimatica III@1@false
 MAT201@Calculo I Integral con Geometria Analitica@4@false
 MAT105@Algebra Lineal@4@false
 CCC208@Programacion III@3@false

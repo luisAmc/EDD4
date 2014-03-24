@@ -17,8 +17,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  *
@@ -75,7 +77,8 @@ public class PlanDeClases {
         }
         @Override
         public String toString() {
-            return codigo + " " + nombre + " u.v.: " + uv + ((semestral == true) ? " Es una clase semestral" : " No es una clase semestral");
+            return codigo + " " + nombre + " u.v.: " + uv;
+             //+ ((semestral == true) ? " Es una clase semestral" : " No es una clase semestral")
         }
     }//Final de la clase anonima NodoClase
     class DependenciaClase {
@@ -134,16 +137,21 @@ public class PlanDeClases {
                     codigoClase2 = tokens.nextToken();
                     for (NodoClase nodoTmp1 : grafo.getVertices()) {
                         if (nodoTmp1.getCodigo().equalsIgnoreCase(codigoClase1)) {
-                            for (NodoClase nodoTmp2 : grafo.getVertices()) {
-                                if (nodoTmp2.getCodigo().equalsIgnoreCase(codigoClase2)) {
-                                    dependenciaTmp = new DependenciaClase(nodoTmp1, nodoTmp2);
-                                    grafo.addEdge(dependenciaTmp, nodoTmp1, nodoTmp2, EdgeType.DIRECTED);
+                            if (codigoClase2.equalsIgnoreCase("null")) {
+                                System.out.println("->-> " + nodoTmp1.nombre + " puede ser una clase inicial");
+                            } else {
+                                for (NodoClase nodoTmp2 : grafo.getVertices()) {
+                                    if (nodoTmp2.getCodigo().equalsIgnoreCase(codigoClase2)) {
+                                        dependenciaTmp = new DependenciaClase(nodoTmp1, nodoTmp2);
+                                        grafo.addEdge(dependenciaTmp, nodoTmp1, nodoTmp2, EdgeType.DIRECTED);
                                         nodoTmp2.aumentarIndegree(dependenciaTmp);
                                         nodoTmp1.aumentarOutdegree(dependenciaTmp);
-                                    break;
+                                        System.out.println("-> " + nodoTmp1.nombre + " depende de " + nodoTmp2.nombre);
+                                        break;
+                                    }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
                 }
@@ -153,9 +161,9 @@ public class PlanDeClases {
             ex.printStackTrace();
         }
     }//Final del metodo cargarDependencias(Este une los vertices del grafo)
-    private void ordenamientoTopologico() {
+    public void ordenamientoTopologico() {
         ArrayList<NodoClase> listaNodos = new ArrayList<NodoClase>();
-        HashSet<NodoClase> conjuntoClases = new HashSet<NodoClase>();
+        LinkedHashSet<NodoClase> conjuntoClases = new LinkedHashSet<NodoClase>();
         for (NodoClase nodoTmp : grafo.getVertices()) {
             if (nodoTmp.getIndegree().size() == 0) {
                 conjuntoClases.add(nodoTmp);
@@ -187,7 +195,16 @@ public class PlanDeClases {
         }
         if (ciclo)
             System.out.println("Existe un ciclo man, algo esta mal con el grafo! HAY QUE ARREGLALO!");
-        else 
-            System.out.println("Ordenamiento topologico: " + Arrays.toString(listaNodos.toArray()));
+        else {
+            int j = 0;
+            for (int i = listaNodos.size() - 1; i >= 0; i--) {
+                System.out.print(listaNodos.get(i) + "\t |||| \t");
+                j++;
+                if (j == 3) {
+                    System.out.println("");
+                    j = 0;
+                }
+            }
+        }
     }
 }
