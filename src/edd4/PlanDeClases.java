@@ -36,7 +36,7 @@ public class PlanDeClases {
         cargarDependencias();
     }//fin plan de clases
 
-    static class NodoClase implements Cloneable{
+    static class NodoClase implements Cloneable, Comparable{
 
         private String codigo;
         private String nombre;
@@ -54,16 +54,18 @@ public class PlanDeClases {
             outEdges = new LinkedHashSet<DependenciaClase>();
         }
         
-        public NodoClase(final NodoClase nodo) {
-            NodoClase nodoNuevo = new NodoClase(nodo.codigo, nodo.nombre, nodo.uv, nodo.semestral);
-            this.inEdges = new LinkedHashSet<DependenciaClase>();
-            for (DependenciaClase arista : nodo.getInEdges()) {
-                this.inEdges.add(arista);
-            }
-            this.outEdges = new LinkedHashSet<DependenciaClase>();
-            for (DependenciaClase arista : nodo.getOutEdges()) {
-                this.outEdges.add(arista);
-            }
+        public NodoClase(NodoClase nodo) {
+            NodoClase clase = new NodoClase(nodo.codigo, nodo.nombre, nodo.uv, nodo.semestral);
+            inEdges = new LinkedHashSet<DependenciaClase>();
+            outEdges = new LinkedHashSet<DependenciaClase>();
+            if (nodo.getOutEdges().size() > 0) 
+                for (DependenciaClase arista : nodo.getOutEdges()) {
+                    this.outEdges.add(arista);
+                }
+            if (nodo.getInEdges().size() > 0)
+                for (DependenciaClase arista : nodo.getInEdges()) 
+                    this.inEdges.add(arista);
+            
         }
         
         @Override
@@ -102,6 +104,14 @@ public class PlanDeClases {
         public String toString() {
             return codigo + " " + nombre;
             //+ ((semestral == true) ? " Es una clase semestral" : " No es una clase semestral")
+        }
+
+        @Override
+        public int compareTo(Object o) {
+            if (this.nombre == ((NodoClase)(o)).nombre && this.codigo == ((NodoClase)(o)).codigo) {
+                return 0;
+            }
+            return 1;
         }
     }//Final de la clase anonima NodoClase
 
@@ -216,13 +226,6 @@ public class PlanDeClases {
     }//Final del metodo cargarDependencias(Este une los vertices del grafo)
 
     public void ordenamientoTopologico() {
-        for (NodoClase tmp : grafo.getVertices()) {
-            if (tmp.nombre.equalsIgnoreCase("Teoria de Base de Datos I")) {
-                System.out.println("teo depende de " + tmp.getInEdges().size());
-                System.out.println("teo sufiencia de " + tmp.getOutEdges().size());
-            }
-        }
-        
         ArrayList<NodoClase> listaDependencias = new ArrayList<NodoClase>();
         ArrayList<NodoClase> listaNodos = new ArrayList<NodoClase>();
         LinkedHashSet<NodoClase> conjuntoClases = new LinkedHashSet<NodoClase>();
@@ -234,17 +237,13 @@ public class PlanDeClases {
             }
         }
         
-        int contador = 0;
-//        System.out.println("\nViendo la lista");
         while (!conjuntoClases.isEmpty()) {
-            NodoClase nodoTmp = conjuntoClases.iterator().next();
-            conjuntoClases.remove(nodoTmp);
-//            System.out.println(nodoTmp);
-            listaNodos.add((NodoClase)(nodoTmp.clone()));
-            listaDependencias.add((NodoClase)nodoTmp.clone());
-            System.out.println("el size real es -> " + listaDependencias.get(contador).getOutEdges().size());
-            contador++;
-            for (Iterator<DependenciaClase> iterador = nodoTmp.getOutEdges().iterator(); iterador.hasNext();) {
+            NodoClase nodoAux = conjuntoClases.iterator().next();
+            conjuntoClases.remove(nodoAux);
+            listaNodos.add((NodoClase)(nodoAux.clone()));
+            listaDependencias.add(new NodoClase(nodoAux));
+            
+            for (Iterator<DependenciaClase> iterador = nodoAux.getOutEdges().iterator(); iterador.hasNext();) {
                 DependenciaClase dependencia = iterador.next();
                 NodoClase clase = dependencia.llegada;
                 iterador.remove();
@@ -255,6 +254,11 @@ public class PlanDeClases {
                 }
             }
         }
+        
+//        for (int i = 0; i < listaDependencias.size(); i++) {
+//            System.out.println("123123123 antes de enviar -> " + listaDependencias.get(i).getOutEdges());
+//        }
+        
         boolean ciclo = false;
         for (NodoClase nodoTmp : grafo.getVertices()) {
             if (!nodoTmp.inEdges.isEmpty()) {
@@ -262,7 +266,7 @@ public class PlanDeClases {
                 break;
             }
         }
-        if (false) {
+        if (ciclo) {
             System.out.println("Existe un ciclo man, algo esta mal con el grafo! HAY QUE ARREGLALO! ");
         } else {
             try {
@@ -271,19 +275,15 @@ public class PlanDeClases {
                 for (int i = 0; i < listaNodos.size(); i++) {
                     if (validacionTopologica(listaNodos, listaDependencias, i) == 0) {
                         salida += "\t || \t" + listaNodos.get(i);
-                        System.out.println(0);
                         clasesPorTrimestre++;
                     } else if (validacionTopologica(listaNodos, listaDependencias, i) == 1) {
                         salida += "\t || \t" + listaNodos.get(i);
-                        System.out.println(1);
                         clasesPorTrimestre += 3;
                     } else if (validacionTopologica(listaNodos, listaDependencias, i) == 2) {
                         salida += "\t || \t" + listaNodos.get(i);
-                        System.out.println(2);
                         clasesPorTrimestre += 2;
                     } else if (validacionTopologica(listaNodos, listaDependencias, i) == 3) {
                         salida += "\t || \t" + listaNodos.get(i);
-                        System.out.println(3);
                         clasesPorTrimestre += 1;
                     }
                     if (clasesPorTrimestre > 3) {
@@ -299,26 +299,27 @@ public class PlanDeClases {
     }
     private int validacionTopologica(ArrayList<NodoClase> lista, ArrayList<NodoClase> dependencias, int pos) {
         int retVal = 0;
-        System.out.println(dependencias.get(pos).getOutEdges().size() + " <- este es el size");
         try {
-            if (lista.get(pos).getOutEdges().isEmpty())
+            if (dependencias.get(pos).getOutEdges().isEmpty()){
                 return retVal;
-            else if (!dependencias.get(pos).getOutEdges().isEmpty()) {
-                Iterator<DependenciaClase> iterador = lista.get(pos).getOutEdges().iterator();
-                while (iterador.hasNext()) {
-                    Iterator<DependenciaClase> iterador2 = dependencias.get(pos).getOutEdges().iterator();
-                    while (iterador2.hasNext()) {
-                        if (iterador2.next().llegada.equals(iterador2.next().partida)); 
+            } else if (!dependencias.get(pos).getOutEdges().isEmpty()) {
+                for (int i = pos + 1; i < pos + 3; i++) {
+                    for (DependenciaClase arista : dependencias.get(i).getInEdges()) {
+                        if (lista.get(pos).compareTo(arista.partida) == 1) {
                             retVal++;
-                        if (iterador2.next().llegada.equals(iterador2.next().partida))
+                        }
+                        if (lista.get(pos).compareTo(arista.partida) == 1) {
                             retVal++;
-                        if (iterador2.next().llegada.equals(iterador2.next().partida)) 
+                        }
+                        if (lista.get(pos).compareTo(arista.partida) == 1) {
                             retVal++;
-                    }
-                }    
+                        }
+                    }    
+                }
             }
         } catch (Exception ex) {
         } finally {
+            System.out.println("retVal " + retVal);
             return retVal;
         }
     }
